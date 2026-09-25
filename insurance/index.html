@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CLEARANCE sample report: US insurance AI governance diagnostic</title>
+<meta name="description" content="A sample CLEARANCE AI governance diagnostic of a US insurer's live AI system. The organisation and people named are fictional.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#13293D; --paper:#FFFFFF; --wash:#EEF3F6; --line:#D5DEE4;
+  --muted:#56636D; --verdict:#D9621E; --pass:#1F7A4D; --band:#215E8C;
+  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#E6EDF2; --paper:#0F1B26; --wash:#172735; --line:#2A3E4F;
+    --muted:#9AAAB6; --verdict:#F08A4B; --pass:#4FBF86; --band:#2E78AE;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#E6EDF2; --paper:#0F1B26; --wash:#172735; --line:#2A3E4F;
+  --muted:#9AAAB6; --verdict:#F08A4B; --pass:#4FBF86; --band:#2E78AE;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55}
+a{color:var(--band)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--verdict);outline-offset:3px}
+.sample{background:var(--band);color:#fff;font-size:14px;padding:10px 20px;text-align:center}
+.sample strong{font-weight:700}
+.wrap{max-width:880px;margin:0 auto;padding:0 24px}
+header.top{padding:28px 0 8px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:22px;letter-spacing:.02em}
+.brand span{font-weight:500;color:var(--muted);font-size:15px;margin-left:8px;letter-spacing:0}
+.lede{color:var(--muted);max-width:62ch;margin:6px 0 0}
+
+/* Hero: the verdict itself */
+.verdict{margin:36px 0 12px;display:grid;grid-template-columns:1.25fr 1fr;gap:36px;align-items:center}
+.verdict h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,7vw,64px);line-height:1.02;margin:0;color:var(--verdict)}
+.verdict .scope{margin:14px 0 0;color:var(--muted);max-width:44ch}
+.ref{font-size:14px;color:var(--muted);margin-top:18px}
+.quad{width:100%;max-width:320px;justify-self:end}
+.quad text{font-family:var(--sans)}
+.meters{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:28px 0 8px}
+.meter{padding:18px 0}
+.meter+.meter{border-left:1px solid var(--line);padding-left:24px}
+.meter .n{font-size:40px;font-weight:700;line-height:1}
+.meter .n small{font-size:17px;font-weight:500;color:var(--muted)}
+.meter p{margin:6px 0 0;color:var(--muted);font-size:15px;max-width:34ch}
+.owner{font-size:15px;margin:14px 0 0}
+
+section{margin:56px 0}
+h2{font-family:var(--serif);font-weight:600;font-size:28px;line-height:1.2;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 20px;max-width:64ch}
+
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:16px}
+th,td{text-align:left;padding:11px 12px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:14px}
+td.ans{font-weight:600;white-space:nowrap}
+
+/* Areas: score against the pass line */
+.area{display:grid;grid-template-columns:200px 1fr 64px;gap:16px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.area .name{font-weight:600}
+.bar{position:relative;height:12px;background:var(--wash);border-radius:2px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--verdict);border-radius:2px}
+.bar b{position:absolute;top:-6px;bottom:-6px;left:70%;width:2px;background:var(--ink)}
+.area .score{font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+.legend{font-size:14px;color:var(--muted);margin-top:10px}
+
+.status{font-weight:600;font-size:14px;white-space:nowrap}
+.status.review{color:var(--verdict)}
+.status.un{color:var(--muted)}
+
+.repro{background:var(--wash);padding:24px;border-left:4px solid var(--band)}
+.repro code{font-size:15px;word-break:break-all}
+.repro p{margin:0 0 10px}
+.repro p:last-child{margin:0}
+
+.docs{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.doc{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);padding:22px;border-top:4px solid var(--ink)}
+.doc:hover{border-color:var(--band);border-top-color:var(--band)}
+.doc h3{margin:0 0 6px;font-size:19px}
+.doc p{margin:0 0 12px;color:var(--muted);font-size:15px}
+.doc span{font-weight:600;color:var(--band);font-size:15px}
+
+footer{border-top:1px solid var(--line);padding:28px 0 48px;color:var(--muted);font-size:15px}
+footer p{margin:0 0 8px}
+
+@media (max-width:720px){
+  body{font-size:16px}
+  .verdict{grid-template-columns:1fr;gap:20px}
+  .quad{justify-self:start;max-width:260px}
+  .meters{grid-template-columns:1fr}
+  .meter+.meter{border-left:0;border-top:1px solid var(--line);padding-left:0}
+  .area{grid-template-columns:1fr 52px}
+  .area .name{grid-column:1 / -1}
+  .docs{grid-template-columns:1fr}
+}
+
+.counts{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:28px 0 8px}
+.counts div{padding:18px 0 18px 20px}.counts div:first-child{padding-left:0}
+.counts div+div{border-left:1px solid var(--line)}
+.counts .n{font-size:40px;font-weight:700;line-height:1}.counts p{margin:6px 0 0;color:var(--muted);font-size:15px}
+.sev{font-weight:700;font-size:13px;letter-spacing:.04em;white-space:nowrap}
+.sev.CRITICAL{color:var(--verdict)}.sev.HIGH{color:var(--ink)}.sev.MEDIUM{color:var(--muted)}
+.blk{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;color:#fff;background:var(--verdict);padding:2px 6px;border-radius:2px}
+td .gt{font-weight:600;display:block;margin-bottom:4px}td .pl{color:var(--muted);font-size:15px}
+.docs.one{grid-template-columns:1fr}
+@media (max-width:720px){.counts{grid-template-columns:1fr 1fr}.counts div:nth-child(3){border-left:0;padding-left:0}}
+</style>
+</head>
+<body>
+<div class="sample" role="note"><strong>Sample report.</strong> Northgate Business Insurance and Dana Whitfield are fictional. No real organisation or person has been assessed.</div>
+<div class="wrap">
+<header class="top">
+  <div class="brand">CLEARANCE<span>AI governance diagnostic</span></div>
+  <a href="https://clearance-diagnostic.com">clearance-diagnostic.com</a>
+</header>
+<p class="lede">This is what a US insurer receives after a CLEARANCE diagnostic of an AI system that is already live. The example is a digital small-commercial carrier using AI and external data in underwriting, pricing and claims triage, across five states. It has a named AI owner and an AI inventory, but key controls are missing. The findings are built from what state insurance examiners are expected to ask for under the NAIC Model Bulletin and its 2026 examiner evaluation tool, NY DFS Circular Letter No. 7 and Colorado SB 21-169. A <a href="../">US financial services sample</a> is also available.</p>
+<div class="verdict" style="grid-template-columns:1fr">
+  <div>
+    <h1>Deployment blocked</h1>
+    <p class="scope" style="max-width:62ch">Two gaps must be closed before this system can continue: no documented unfair discrimination and proxy testing of the underwriting and pricing models, and AI-supported claim denials reaching policyholders with no human review first.</p>
+    <p class="ref">Reference CLR-NGB-US-0001 · US insurance · Engine 1.6 · Gap library 1.9.6 · US insurance layer 1.0.0</p>
+  </div>
+</div>
+<div class="counts">
+  <div><div class="n">7</div><p>gaps found</p></div>
+  <div><div class="n">0</div><p>critical</p></div>
+  <div><div class="n">6</div><p>high</p></div>
+  <div><div class="n">2</div><p>block deployment</p></div>
+</div>
+<section>
+<h2>What was found</h2>
+<p class="sub">Each gap fires only when specific answers are present, and the report shows which ones. For each, the report states what it looks like when it goes wrong and the first thing to do about it.</p>
+<div class="scroll"><table>
+<thead><tr><th>Severity</th><th>Gap and what it looks like in practice</th><th>First action</th></tr></thead>
+<tbody>
+<tr><td><span class="sev HIGH">HIGH</span><br><span class="blk">Blocks deployment</span></td><td><span class="gt">AI or external data used in underwriting or pricing without documented unfair discrimination and proxy testing</span><span class="pl">A New York examiner asks for your quantitative testing showing the pricing model does not proxy for a protected class. The only evidence is the vendor&#x27;s assurance letter.</span></td><td>List every model variable and external data source in underwriting and pricing today, and commission a documented proxy and disparate-impact assessment.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span><br><span class="blk">Blocks deployment</span></td><td><span class="gt">AI used to deny or reduce claims without human review before the decision takes effect</span><span class="pl">A policyholder&#x27;s claim was denied by a model score. In litigation, the claim file shows no adjuster looked at it before the letter went out.</span></td><td>Put a human review step in front of every AI-supported claim denial or reduction today, and record who reviewed it and why.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">No decision boundary enforcement</span><span class="pl">An incident investigation asks a simple question: what governed this decision before it executed? For this system, there is no answer. The output became the action with nothing in between.</span></td><td>Introduce a rule evaluation layer between this system&#x27;s output and the action it takes. Even a minimal documented ruleset is a material improvement on none.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">Audit void</span><span class="pl">A client disputes a decision and asks to see the record. The decision happened. The record of it did not.</span></td><td>Start logging every decision this system makes today: date, input, output, rule applied, in a write-once store. This is the foundation. Every other governance control depends on it existing.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">AI used in regulated insurance practices without a written AIS Program</span><span class="pl">A market conduct examiner&#x27;s first request is your written AIS Program and evidence the board adopted it. You have neither to hand over.</span></td><td>Draft a proportionate AIS Program this month, name the accountable executive, and take it to the board or a board committee for adoption.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">Third-party AI systems or data used without diligence, audit rights and regulator cooperation terms</span><span class="pl">A regulator asks how you validated the vendor model that priced this policy. The contract gives you no right to look inside it.</span></td><td>List every AI and data vendor behind a regulated decision this week and check each contract for audit rights and regulator cooperation.</td></tr>
+<tr><td><span class="sev MEDIUM">MEDIUM</span></td><td><span class="gt">Provenance weakness</span><span class="pl">A regulator or auditor asks where the data came from that drove a specific decision. Tracing it back takes days, not minutes, and for some inputs there is no trail at all.</span></td><td>Create a register of every data source feeding this system. Assign an owner and a validation status to each.</td></tr>
+</tbody></table></div>
+</section>
+<section>
+<h2>Obligations engaged</h2>
+<p class="sub">The regulations and frameworks the gaps touch. <strong>Gap</strong> means a finding directly engages the obligation; <strong>Review</strong> means it is relevant to the sector and worth examining. The NAIC bulletin creates no new law; it sets out how existing unfair trade and unfair claims laws apply to AI in the states that have issued it.</p>
+<div class="scroll"><table>
+<thead><tr><th>Obligation</th><th>What it requires</th><th>Status</th></tr></thead>
+<tbody><tr><td class="ans">NAIC Model Bulletin: Use of AI Systems by Insurers</td><td>Written AIS Program with board accountability and proportionate controls</td><td class="status review">Gap</td></tr><tr><td class="ans">NY DFS Insurance Circular Letter No. 7 (2024)</td><td>Unfair discrimination and proxy testing of AI and external data in underwriting and pricing</td><td class="status review">Gap</td></tr><tr><td class="ans">Colorado SB 21-169 / Regulation 10-1-1</td><td>No unfair discrimination from external consumer data and algorithms</td><td class="status review">Gap</td></tr><tr><td class="ans">NAIC Model Bulletin: third-party AI standards</td><td>Due diligence, audit rights and regulator cooperation for vendor AI and data</td><td class="status review">Gap</td></tr><tr><td class="ans">Unfair Claims Settlement Practices Acts</td><td>Reasonable investigation and fair handling of AI-supported claims</td><td class="status review">Gap</td></tr><tr><td class="ans">NAIC Model Bulletin Section 4 / AI Systems Evaluation Tool</td><td>What examiners request: program, inventory, testing records, vendor contracts</td><td class="status un">Review</td></tr><tr><td class="ans">State adverse underwriting decision notice laws</td><td>Specific reasons for adverse decisions, including AI and external data</td><td class="status un">Review</td></tr><tr><td class="ans">NIST AI RMF</td><td>Govern, Map, Measure, Manage, recognised by the NAIC bulletin</td><td class="status un">Review</td></tr></tbody></table></div>
+</section>
+
+<section>
+<h2>Same answers, same result</h2>
+<p class="sub">No AI model makes the decision. CLEARANCE applies fixed, version-controlled rules, so anyone re-running the same answers against the same rule versions and engagement reference gets the same findings.</p>
+<div class="repro">
+  <p><strong>Findings fingerprint (SHA-256)</strong></p>
+  <p><code>ff5d5ffea9a268da953cf8b6b209c7eafd06e67ebdddbf274bf2fdb9635b0b2e</code></p>
+  <p>Calculated from the findings only. It changes if any finding changes, and stays the same on every re-run of the same answers.</p>
+</div>
+</section>
+
+<section>
+<h2>The full report</h2>
+<div class="docs one">
+  <a class="doc" href="CLEARANCE-sample-report-insurance.pdf">
+    <h3>AI Governance Diagnostic Report (PDF)</h3>
+    <p>Every gap with its regulatory references, the obligations table, a remediation roadmap with priorities, and the evidence appendix showing each answer.</p>
+    <span>Download the sample report</span>
+  </a>
+</div>
+</section>
+
+<footer>
+  <p>CLEARANCE by John Akinmade · <a href="https://clearance-diagnostic.com">clearance-diagnostic.com</a> · <a href="mailto:john@akinmade.co.uk">john@akinmade.co.uk</a></p>
+  <p>Sample for illustration only. Not legal or regulatory advice.</p>
+</footer>
+</div>
+</body>
+</html>
