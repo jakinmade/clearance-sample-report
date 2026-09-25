@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CLEARANCE sample report: AI Governance Diagnostic</title>
-<meta name="description" content="A sample CLEARANCE AI governance diagnostic of a live AI system. The organisation and people named are fictional.">
+<title>CLEARANCE sample report: UK insurance AI governance diagnostic</title>
+<meta name="description" content="A sample CLEARANCE AI governance diagnostic of a UK insurer's live AI system. The organisation and people named are fictional.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,76 +117,66 @@ td .gt{font-weight:600;display:block;margin-bottom:4px}td .pl{color:var(--muted)
 </style>
 </head>
 <body>
-<div class="sample" role="note"><strong>Sample report.</strong> Excel Invests and Jason Butler are fictional. No real organisation or person has been assessed.</div>
+<div class="sample" role="note"><strong>Sample report.</strong> Thameside Underwriting Agency and Oliver Grant are fictional. No real organisation or person has been assessed.</div>
 <div class="wrap">
 <header class="top">
   <div class="brand">CLEARANCE<span>AI governance diagnostic</span></div>
   <a href="https://clearance-diagnostic.com">clearance-diagnostic.com</a>
 </header>
-<p class="lede">This is what an organisation receives after a CLEARANCE diagnostic of an AI system that is already live. The example is a US financial services firm using AI in consumer financial decisions, with a named owner in place but key controls missing. It is the same fictional firm as the <a href="https://jakinmade.github.io/aqe-sample-report/">AQE sample</a>, which checks readiness before an AI system goes live. A <a href="insurance/">US insurance sample</a> is also available.</p>
-
+<p class="lede">This is what a UK insurance firm receives after a CLEARANCE diagnostic of an AI system that is already live. The example is a London-market MGA writing under a binding authority, using AI in underwriting, renewal pricing and claims for retail home and SME customers. Its decision rules are documented and enforced and its customer explanations and product governance are in place, but four insurance controls are missing. Each finding fires only when a specific control is absent, so a firm that can evidence a control does not see the gap. A <a href="../insurance/">US insurance sample</a> is also available.</p>
 <div class="verdict" style="grid-template-columns:1fr">
   <div>
-    <h1>Deployment blocked</h1>
-    <p class="scope" style="max-width:62ch">Three gaps must be closed before this system can continue in consumer financial decisions: no model risk framework covering the AI, no adverse action notice process that reflects what the AI actually weighed, and no written remediation plan.</p>
-    <p class="ref">Reference CLR-EXI-US-0001 · US financial services · Engine 1.6 · Gap library 1.9.7 · US FS layer 1.0.0</p>
+    <h1>High risk</h1>
+    <p class="scope" style="max-width:62ch">No gap blocks deployment outright, but four insurance findings need closing: the binder is silent on AI, there is no ENBP evidence for the AI renewal pricing model, no proxy discrimination testing, and no assessment of the effect on vulnerable customers.</p>
+    <p class="ref">Reference CLR-TUA-UK-0001 · UK insurance · Engine 1.6 · Gap library 1.9.7</p>
   </div>
 </div>
 <div class="counts">
-  <div><div class="n">10</div><p>gaps found</p></div>
-  <div><div class="n">1</div><p>critical</p></div>
-  <div><div class="n">8</div><p>high</p></div>
-  <div><div class="n">3</div><p>block deployment</p></div>
+  <div><div class="n">6</div><p>gaps found</p></div>
+  <div><div class="n">0</div><p>critical</p></div>
+  <div><div class="n">5</div><p>high</p></div>
+  <div><div class="n">0</div><p>block deployment</p></div>
 </div>
-
 <section>
 <h2>What was found</h2>
 <p class="sub">Each gap fires only when specific answers are present, and the report shows which ones. For each, the report states what it looks like when it goes wrong and the first thing to do about it.</p>
 <div class="scroll"><table>
 <thead><tr><th>Severity</th><th>Gap and what it looks like in practice</th><th>First action</th></tr></thead>
 <tbody>
-<tr><td><span class="sev CRITICAL">CRITICAL</span><br><span class="blk">Blocks deployment</span></td><td><span class="gt">Remediation path absent</span><span class="pl">Investigators do not weigh single gaps in isolation. They look for a pattern with no remediation plan behind it, because that is what separates an organisation that missed something from one that knew and did nothing.</span></td><td>Designate a named individual responsible for AI governance and give them 30 days to produce a written plan. Even a one-page document with milestones is enough to show the organisation is taking this seriously.</td></tr>
-<tr><td><span class="sev HIGH">HIGH</span><br><span class="blk">Blocks deployment</span></td><td><span class="gt">No model risk management framework covering AI systems</span><span class="pl">An SEC examiner asks for documentation of the firm&#x27;s AI model governance. There is no model inventory, no validation records, and no monitoring process to show them.</span></td><td>Build a model inventory this week. Document every AI system touching financial decisions. Assign a named owner. Schedule independent validation within 90 days.</td></tr>
-<tr><td><span class="sev HIGH">HIGH</span><br><span class="blk">Blocks deployment</span></td><td><span class="gt">No adverse action notice process for AI-driven consumer financial decisions</span><span class="pl">A CFPB examiner asks to see the adverse action notices issued against AI credit decisions. The reasons cited don&#x27;t reflect what the AI actually weighted.</span></td><td>Map every AI-driven consumer financial decision today. Confirm an adverse action notice process exists. Test notice language against CFPB Circular 2022-03.</td></tr>
-<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">No decision boundary enforcement</span><span class="pl">An incident investigation asks a simple question: what governed this decision before it executed? For this system, there is no answer. The output became the action with nothing in between.</span></td><td>Introduce a rule evaluation layer between this system&#x27;s output and the action it takes. Even a minimal documented ruleset is a material improvement on none.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">AI-assisted underwriting or claims decisioning delegated to a coverholder or DCA without managing agent oversight</span><span class="pl">Lloyd&#x27;s Delegated Authorities team asks the managing agent whether any coverholder operating under its binders uses AI in claims decisioning. The managing agent cannot answer, it has never asked, and the binder does not require the coverholder to say.</span></td><td>Amend the binder to require AI disclosure. Add an AI-use field to bordereaux templates. Extend the existing delegated authority audit programme to cover AI governance specifically. These are contractual and process controls, they do not require the managing agent to touch the coverholder&#x27;s technology.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">AI-driven renewal pricing model without evidence it satisfies the Equivalent New Business Price rule</span><span class="pl">The FCA&#x27;s GIPP multi-firm review asks the firm to produce the evidence its senior manager relied on to attest ENBP compliance for its AI-driven pricing model. The firm has a pricing policy document. It does not have model-specific evidence, and the attestor signed anyway.</span></td><td>Build the ENBP evidence pack for the model&#x27;s actual output. Test for tenure-proxy variables in the feature set. Brief the attestor on the model specifically before the next annual sign-off. These are documentation and testing controls, they do not require rebuilding the pricing model itself.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">AI underwriting or pricing model uses protected-characteristic proxies without an actuarial justification the firm can evidence</span><span class="pl">A journalist asks the firm whether its underwriting model prices differently by postcode in a way that reproduces a racial pattern. The firm has never tested for this itself and has no actuarial file to point to, for age or disability it might have had a defence; for this, it has none.</span></td><td>Test the model&#x27;s feature set against each protected characteristic separately, since the legal position differs by characteristic. Build the actuarial justification file for age and disability features that pass. Remove or retire any feature correlating with sex or race. Repeat testing after every retrain.</td></tr>
+<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">AI-driven underwriting or pricing decision affects vulnerable customers without FG21/1-aligned safeguards</span><span class="pl">The FCA&#x27;s independent review of travel underwriting for pre-existing mental health conditions lands on the firm&#x27;s desk. The firm has never looked at its own AI model&#x27;s decline pattern against that specific criterion, the regulator&#x27;s review is the first time anyone has.</span></td><td>Build vulnerability flagging into the underwriting workflow. Run the mental-health/travel-insurance and social-renter/contents-insurance comparisons internally now. Train staff on override authority. These are review and process controls, not a rebuild of the underwriting model.</td></tr>
 <tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">Audit void</span><span class="pl">A client disputes a decision and asks to see the record. The decision happened. The record of it did not.</span></td><td>Start logging every decision this system makes today: date, input, output, rule applied, in a write-once store. This is the foundation. Every other governance control depends on it existing.</td></tr>
-<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">Accountability gap</span><span class="pl">Something goes wrong and the question lands on one desk: who was overseeing this system? The honest answer is no one was, formally, even though someone&#x27;s name sits next to it.</span></td><td>Have the accountable individual start an oversight log this week: date, decision reviewed, action taken or confirmed. Even a simple log converts a job title into a defensible position.</td></tr>
-<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">No audit trail for AI-assisted financial decisions</span><span class="pl">A client disputes an AI-assisted recommendation, and FINRA arbitration requires production of the decision record. No log was ever kept.</span></td><td>Implement per-decision AI logging this week. Integrate with your books and records system. Confirm retention periods. Test retrieval.</td></tr>
-<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">No bias testing or fairness controls on AI-driven financial decisions</span><span class="pl">Fair lending scrutiny from the CFPB calls for disparate impact analysis on AI credit decisions. None has ever been conducted.</span></td><td>Commission a disparate impact analysis on every AI-driven financial decision today. Document the methodology. Implement monitoring thresholds.</td></tr>
-<tr><td><span class="sev HIGH">HIGH</span></td><td><span class="gt">No CCPA-compliant consumer rights process for AI-processed personal financial data</span><span class="pl">A California consumer submits a CCPA access request covering AI-processed financial data. The AI systems were never mapped into the rights request workflow.</span></td><td>Map AI systems processing California consumer financial data today. Include them in your CCPA workflow. Update your privacy notice.</td></tr>
 <tr><td><span class="sev MEDIUM">MEDIUM</span></td><td><span class="gt">Provenance weakness</span><span class="pl">A regulator or auditor asks where the data came from that drove a specific decision. Tracing it back takes days, not minutes, and for some inputs there is no trail at all.</span></td><td>Create a register of every data source feeding this system. Assign an owner and a validation status to each.</td></tr>
 </tbody></table></div>
 </section>
-
 <section>
 <h2>Obligations engaged</h2>
 <p class="sub">The regulations and frameworks the gaps touch. <strong>Gap</strong> means a finding directly engages the obligation; <strong>Review</strong> means it is relevant to the sector and worth examining.</p>
 <div class="scroll"><table>
 <thead><tr><th>Obligation</th><th>What it requires</th><th>Status</th></tr></thead>
-<tbody><tr><td class="ans">SR 11-7 (Federal Reserve / OCC)</td><td>Model risk management: inventory, validation, monitoring</td><td class="status review">Gap</td></tr><tr><td class="ans">SEC Staff Bulletin 2024-06</td><td>AI governance and supervision for advisers and broker-dealers</td><td class="status review">Gap</td></tr><tr><td class="ans">ECOA / Regulation B, CFPB Circular 2022-03</td><td>Adverse action notices must reflect the factors the AI actually used</td><td class="status review">Gap</td></tr><tr><td class="ans">Fair Housing Act</td><td>Fairness in AI-driven mortgage and insurance decisions</td><td class="status review">Gap</td></tr><tr><td class="ans">CCPA / CPRA</td><td>Consumer rights over AI-processed personal financial data</td><td class="status review">Gap</td></tr><tr><td class="ans">NY DFS Part 500</td><td>Audit logging for AI systems at covered institutions</td><td class="status review">Gap</td></tr><tr><td class="ans">FINRA Rule 3110 / Notice 24-09</td><td>Supervision of AI tools, named supervisor</td><td class="status un">Review</td></tr><tr><td class="ans">NIST AI RMF</td><td>Govern, Map, Measure, Manage, referenced per gap</td><td class="status un">Review</td></tr></tbody></table></div>
+<tbody><tr><td class="ans">PRA / FCA outsourcing; binding authority oversight</td><td>Managing agent or insurer oversight of AI used by coverholders and DCAs</td><td class="status review">Gap</td></tr><tr><td class="ans">FCA ICOBS 6B pricing practices (ENBP)</td><td>Home and motor renewal prices no higher than equivalent new business price, with records</td><td class="status review">Gap</td></tr><tr><td class="ans">Equality Act 2010</td><td>No direct or indirect discrimination through AI rating factors or proxies</td><td class="status review">Gap</td></tr><tr><td class="ans">FCA FG21/1 vulnerable customers</td><td>Fair treatment of customers in vulnerable circumstances affected by AI</td><td class="status review">Gap</td></tr><tr><td class="ans">FCA Consumer Duty / ICOBS 8.1</td><td>Customers understand AI-supported outcomes; reasonable grounds for rejecting claims</td><td class="status un">Review</td></tr><tr><td class="ans">FCA PROD 4</td><td>Product approval, target market and fair value covering the AI&#x27;s role</td><td class="status un">Review</td></tr><tr><td class="ans">UK GDPR Art 22C / DUAA 2025</td><td>Safeguards and human review for significant automated decisions</td><td class="status un">Review</td></tr></tbody></table></div>
 </section>
-
 <section>
 <h2>Same answers, same result</h2>
 <p class="sub">No AI model makes the decision. CLEARANCE applies fixed, version-controlled rules, so anyone re-running the same answers against the same rule versions and engagement reference gets the same findings.</p>
 <div class="repro">
   <p><strong>Findings fingerprint (SHA-256)</strong></p>
-  <p><code>98cfc558716fdf89d72df2efb253b81837d3e68375b92a49c7f396549a16b93c</code></p>
+  <p><code>65dd74b01d6472619787eca85eeddbe2b9057298c3d6d6480da3a258763b9906</code></p>
   <p>Calculated from the findings only. It changes if any finding changes, and stays the same on every re-run of the same answers.</p>
 </div>
 </section>
-
 <section>
 <h2>The full report</h2>
 <div class="docs one">
-  <a class="doc" href="CLEARANCE-sample-report.pdf">
+  <a class="doc" href="CLEARANCE-sample-report-insurance-uk.pdf">
     <h3>AI Governance Diagnostic Report (PDF)</h3>
     <p>Every gap with its regulatory references, the obligations table, a remediation roadmap with priorities, and the evidence appendix showing each answer.</p>
     <span>Download the sample report</span>
   </a>
 </div>
 </section>
-
 <footer>
   <p>CLEARANCE by John Akinmade · <a href="https://clearance-diagnostic.com">clearance-diagnostic.com</a> · <a href="mailto:john@akinmade.co.uk">john@akinmade.co.uk</a></p>
   <p>Sample for illustration only. Not legal or regulatory advice.</p>

@@ -13,3 +13,4 @@ Contact: John Akinmade, john@akinmade.co.uk
 ## US insurance sample
 
 - [`insurance/`](insurance/): a US digital small-commercial insurer (Northgate Business Insurance and Dana Whitfield are fictional), assessed against the CLEARANCE US insurance layer 1.0.0 (NAIC Model Bulletin, NY DFS Circular Letter No. 7, Colorado SB 21-169).
+- [`insurance-uk/`](insurance-uk/): a London-market MGA (Thameside Underwriting Agency and Oliver Grant are fictional), assessed against the CLEARANCE UK insurance layer (FCA, PRA, Equality Act 2010, delegated authority).
