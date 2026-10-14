@@ -18,3 +18,7 @@ Contact: John Akinmade, john@akinmade.co.uk
 ## UK charity sample
 
 - [`charity-uk/`](charity-uk/): a UK wildlife charity using an AI propensity model in its supporter CRM (Kestrel Valley Wildlife Trust is fictional), assessed against the CLEARANCE UK Charity layer 1.0.2 (Charity Commission CC3 and CC20, Code of Fundraising Practice, UK GDPR, PECR).
+
+## US healthcare sample
+
+- [`healthcare-us/`](healthcare-us/): a US regional health plan using AI to recommend prior authorisation decisions (Harlow Ridge Health Plan is fictional), assessed against the CLEARANCE US healthcare layer 1.4.0 (HIPAA Privacy and Security Rules, California SB 1120, Maryland HB 820, Texas TRAIGA, California AB 3030).
