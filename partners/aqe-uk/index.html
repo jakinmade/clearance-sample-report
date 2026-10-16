@@ -426,6 +426,15 @@ var CFG = {"product": "AQE", "engine": "aqe", "region": "UK", "cur": "£", "acce
   var IS_MOBILE = IS_IOS || /Android|Mobile/i.test(UA);
   var IN_APP = /FBAN|FBAV|Instagram|LinkedInApp|Line\/|Twitter|Snapchat|GSA\/|; wv\)/i.test(UA);
   var pdfReady = null;
+  function browserHref(){
+    var u = location.href;
+    if(/Android/i.test(UA)) return "intent://"+u.replace(/^https?:\/\//,"")+"#Intent;scheme=https;package=com.android.chrome;end";
+    if(IS_IOS) return u.replace(/^https:\/\//,"x-safari-https://");
+    return u;
+  }
+  function inAppNote(){
+    return '<b>You are viewing this inside an app, which blocks downloads.</b> <a href="'+browserHref()+'">Open this page in '+(IS_IOS?"Safari":"Chrome")+'</a>, or use the app menu (top right) and choose "Open in browser", then run the check again.';
+  }
   function pdfName(){ return C.product+"-free-check-result.pdf"; }
   function saveBlob(blob){
     var url = URL.createObjectURL(blob), a = document.createElement("a");
@@ -459,21 +468,32 @@ var CFG = {"product": "AQE", "engine": "aqe", "region": "UK", "cur": "£", "acce
     var firm = document.getElementById("firm");
     if(firm && !firm.__w){ firm.__w = 1; firm.addEventListener("input", function(){
       if(!pdfReady) return; pdfReady = null; btn.textContent = btn.getAttribute("data-label"); help.innerHTML = ""; }); }
+    if(IN_APP) help.innerHTML = inAppNote();
+    var finished = false;
+    function fail(err){
+      if(finished) return; finished = true;
+      btn.textContent = label; btn.disabled = false;
+      help.innerHTML = (IN_APP ? inAppNote()+' ' : '') + "Sorry, this phone could not build the PDF" + (err ? " ("+esc(String(err && err.message || err).slice(0,120))+")" : "") +
+        '. <a href="#" data-print>Print or save the result instead</a>, or email us and we will send it.';
+      var pl = help.querySelector("[data-print]"); if(pl) pl.onclick = function(e){ e.preventDefault(); window.print(); };
+    }
+    var timer = setTimeout(function(){ fail("timed out"); }, 25000);
     loadLib(function(ok){
-      function fail(){ btn.textContent = label; btn.disabled = false; window.print(); }
-      if(!ok) return fail();
-      window.html2pdf().set({margin:[8,0,10,0], filename:pdfName(),
-        image:{type:"jpeg",quality:0.95}, html2canvas:{scale:2,useCORS:true,scrollX:0,scrollY:0},
-        jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}, pagebreak:{mode:["css","avoid-all"]}})
-        .from(html).outputPdf("blob").then(function(blob){
-          btn.disabled = false;
-          if(!IS_MOBILE){ btn.textContent = label; saveBlob(blob); return; }
-          // Phones block downloads that don't come straight from a tap, so ask for one more tap.
-          pdfReady = blob; btn.textContent = "PDF ready: tap to save";
-          var url = URL.createObjectURL(blob);
-          help.innerHTML = 'Nothing happened? <a href="'+url+'" target="_blank" rel="noopener">Open the PDF</a> and save it from there.'+
-            (IN_APP ? ' If you opened this link inside LinkedIn or another app, open it in Safari or Chrome instead (use the menu at the top).' : '');
-        }, fail);
+      if(!ok){ clearTimeout(timer); return fail("PDF tool did not load"); }
+      try{
+        window.html2pdf().set({margin:[8,0,10,0], filename:pdfName(),
+          image:{type:"jpeg",quality:0.92}, html2canvas:{scale:IS_MOBILE?1.5:2,useCORS:true,scrollX:0,scrollY:0,windowWidth:794},
+          jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}, pagebreak:{mode:["css","avoid-all"]}})
+          .from(html).outputPdf("blob").then(function(blob){
+            clearTimeout(timer); if(finished) return; finished = true;
+            btn.disabled = false;
+            if(!IS_MOBILE){ btn.textContent = label; saveBlob(blob); return; }
+            // Phones block downloads that don't come straight from a tap, so ask for one more tap.
+            pdfReady = blob; btn.textContent = "PDF ready: tap to save";
+            var url = URL.createObjectURL(blob);
+            help.innerHTML = (IN_APP ? inAppNote()+'<br>' : '') + 'Nothing happened? <a href="'+url+'" target="_blank" rel="noopener">Open the PDF</a> and save it from there.';
+          }, function(e){ clearTimeout(timer); fail(e); });
+      }catch(e){ clearTimeout(timer); fail(e); }
     });
   }
 
