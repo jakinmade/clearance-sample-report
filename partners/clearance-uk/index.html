@@ -149,6 +149,7 @@ footer{border-top:1px solid var(--line);padding:24px 0 40px;font-size:13px;color
 footer p{margin:0 0 8px;max-width:92ch}
 
 #rpt{position:fixed;left:-10000px;top:0}
+.dl .pdfhelp{order:9;font-size:13px;margin:0;color:#56616F}.pdfhelp:empty{display:none}.pdfhelp a{color:inherit;text-decoration:underline}
 .rpt{width:794px;background:#fff;color:#16212E;font:13px/1.55 "Instrument Sans",Arial,sans-serif}
 .rpt .rh{background:#0B1929;color:#fff;padding:28px 36px}
 .rpt .rh .b{font-size:14px;font-weight:700;letter-spacing:.06em;color:#fff}
@@ -420,16 +421,59 @@ var CFG = {"product": "CLEARANCE", "engine": "clearance", "region": "UK", "cur":
     sc.onload = function(){ cb(!!window.html2pdf); }; sc.onerror = function(){ cb(false); };
     document.head.appendChild(sc);
   }
+  var UA = navigator.userAgent || "";
+  var IS_IOS = /iPhone|iPad|iPod/i.test(UA) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
+  var IS_MOBILE = IS_IOS || /Android|Mobile/i.test(UA);
+  var IN_APP = /FBAN|FBAV|Instagram|LinkedInApp|Line\/|Twitter|Snapchat|GSA\/|; wv\)/i.test(UA);
+  var pdfReady = null;
+  function pdfName(){ return C.product+"-free-check-result.pdf"; }
+  function saveBlob(blob){
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = pdfName(); a.rel = "noopener"; a.style.display = "none";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 120000);
+  }
+  function deliver(blob){
+    // Runs inside a real tap, so mobile browsers allow the share sheet / download.
+    if(IS_IOS && window.File && navigator.canShare){
+      try{
+        var file = new File([blob], pdfName(), {type:"application/pdf"});
+        if(navigator.canShare({files:[file]})){
+          navigator.share({files:[file], title:C.product+" free check result"}).catch(function(e){
+            if(!e || e.name!=="AbortError") saveBlob(blob);
+          });
+          return;
+        }
+      }catch(e){}
+    }
+    saveBlob(blob);
+  }
   function download(noAI, btn){
-    var label = btn.textContent; btn.textContent = "Preparing your PDF..."; btn.disabled = true;
+    var wrap = btn.parentNode, help = wrap.querySelector(".pdfhelp");
+    if(!help){ help = document.createElement("p"); help.className = "pdfhelp"; wrap.insertBefore(help, btn.nextSibling); }
+    if(pdfReady){ deliver(pdfReady); return; }
+    var label = btn.getAttribute("data-label") || btn.textContent; btn.setAttribute("data-label", label);
+    btn.textContent = "Preparing your PDF..."; btn.disabled = true; help.innerHTML = "";
     var el = document.getElementById("rpt"); if(!el){ el = document.createElement("div"); el.id="rpt"; document.body.appendChild(el); }
     var html = '<div class="rpt">'+reportHTML(noAI)+'</div>'; el.innerHTML = html;
+    var firm = document.getElementById("firm");
+    if(firm && !firm.__w){ firm.__w = 1; firm.addEventListener("input", function(){
+      if(!pdfReady) return; pdfReady = null; btn.textContent = btn.getAttribute("data-label"); help.innerHTML = ""; }); }
     loadLib(function(ok){
-      function done(){ btn.textContent = label; btn.disabled = false; }
-      if(!ok){ done(); window.print(); return; }
-      window.html2pdf().set({margin:[8,0,10,0], filename:C.product+"-free-check-result.pdf",
+      function fail(){ btn.textContent = label; btn.disabled = false; window.print(); }
+      if(!ok) return fail();
+      window.html2pdf().set({margin:[8,0,10,0], filename:pdfName(),
         image:{type:"jpeg",quality:0.95}, html2canvas:{scale:2,useCORS:true,scrollX:0,scrollY:0},
-        jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}, pagebreak:{mode:["css","avoid-all"]}}).from(html).save().then(done,done);
+        jsPDF:{unit:"mm",format:"a4",orientation:"portrait"}, pagebreak:{mode:["css","avoid-all"]}})
+        .from(html).outputPdf("blob").then(function(blob){
+          btn.disabled = false;
+          if(!IS_MOBILE){ btn.textContent = label; saveBlob(blob); return; }
+          // Phones block downloads that don't come straight from a tap, so ask for one more tap.
+          pdfReady = blob; btn.textContent = "PDF ready: tap to save";
+          var url = URL.createObjectURL(blob);
+          help.innerHTML = 'Nothing happened? <a href="'+url+'" target="_blank" rel="noopener">Open the PDF</a> and save it from there.'+
+            (IN_APP ? ' If you opened this link inside LinkedIn or another app, open it in Safari or Chrome instead (use the menu at the top).' : '');
+        }, fail);
     });
   }
 
