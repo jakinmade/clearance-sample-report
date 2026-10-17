@@ -1,0 +1,92 @@
+{
+  "record_type": "Agent Authority Record",
+  "rules_version": "AAR-rules 0.1.0",
+  "assessed_at": "2026-10-17T10:24:07.449Z",
+  "agent": {
+    "developer_name": "Local_Info_Agent",
+    "label": "Local Info Agent",
+    "file": "Local_Info_Agent.agent",
+    "file_sha256": "7a4ca9ac2dc666c0c0574dac3a836287c2c7257d71510498778587b7e447a5f5",
+    "source": "Salesforce sample agent, github.com/forcedotcom/afdx-pro-code-testdrive (commit 5fc6ead), Apache-2.0"
+  },
+  "summary": {
+    "subagents": 6,
+    "executable_actions": 2,
+    "hand_off_actions": 1,
+    "routed_connections": 0,
+    "blocks_go_live": 2,
+    "needs_decision": 2
+  },
+  "actions": [
+    {
+      "subagent": "local_weather",
+      "action": "check_weather",
+      "target": "apex://CheckWeather",
+      "decided_by": "LLM",
+      "condition": null,
+      "llm_filled_inputs": [
+        "dateToCheck"
+      ],
+      "user_confirmation": false
+    },
+    {
+      "subagent": "resort_hours",
+      "action": "get_resort_hours",
+      "target": "flow://Get_Resort_Hours",
+      "decided_by": "LLM",
+      "condition": null,
+      "llm_filled_inputs": [
+        "activity_type",
+        "day_of_week"
+      ],
+      "user_confirmation": false
+    }
+  ],
+  "findings": [
+    {
+      "id": "H1",
+      "severity": "Blocks go-live",
+      "title": "Hand-off to a human has no route",
+      "detail": "1 hand-off action(s) (escalation.escalate_to_human) but no connection block naming an outbound route. Salesforce documentation states escalation needs a connection messaging block with outbound_route_type and outbound_route_name."
+    },
+    {
+      "id": "A1",
+      "severity": "Needs a decision",
+      "title": "LLM can call check_weather with no condition",
+      "detail": "local_weather.check_weather calls apex://CheckWeather. No \"available when\" condition limits when the LLM may call it."
+    },
+    {
+      "id": "A1",
+      "severity": "Needs a decision",
+      "title": "LLM can call get_resort_hours with no condition",
+      "detail": "resort_hours.get_resort_hours calls flow://Get_Resort_Hours. No \"available when\" condition limits when the LLM may call it."
+    },
+    {
+      "id": "A2",
+      "severity": "For the record",
+      "title": "LLM fills inputs to check_weather",
+      "detail": "Inputs set by the LLM: dateToCheck."
+    },
+    {
+      "id": "A2",
+      "severity": "For the record",
+      "title": "LLM fills inputs to get_resort_hours",
+      "detail": "Inputs set by the LLM: activity_type, day_of_week."
+    },
+    {
+      "id": "U1",
+      "severity": "Blocks go-live",
+      "title": "Run-as user not set",
+      "detail": "default_agent_user is \"UPDATE_WITH_YOUR_DEFAULT_AGENT_USER\". The agent's permissions come from this user, so it must be a real, named user before go-live."
+    }
+  ],
+  "findings_sha256": "372fd2175843b25b21919ca10801bcf5e30708ea55dffdc8655c9049e52bf200",
+  "engine": "Salesforce @sf-agentscript/agentforce 2.10.38 compiler + AAR-rules 0.1.0, no LLM",
+  "seal": {
+    "scheme": "Ed25519",
+    "key_id": "DEMO-2026-10 (sample only, not a CLEARANCE production key)",
+    "payload_sha256": "c1d762faf6a6f4d19bc405d5a3e20528d1d16f871500eb22f2a40739d9398974",
+    "signature_b64": "B/FIzFM+qb6UAl35R0hqecuWJktqJRtxH4of/ZMX2p4Mj/bBlSl1oSwywkOsT4vpp/1ZqFG0O6rcM9zFhFh9Dw==",
+    "public_key_b64": "0faZ+fg9qm8Y1fG/4mjN7o63TIjEav5heywQz60w89E="
+  }
+}
